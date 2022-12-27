@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import clientHttp from "../services/ClientHttp";
-
+import { useNavigate, Link} from "react-router-dom";
 
 const { useEffect, useState } = require("react");
 
@@ -8,10 +8,11 @@ const ConsumirApi = () => {
     const [lista, setLista] = useState([]);
     const [tarea, setTarea] = useState([]);
     const [descripcion, setDescripcion] = useState("");
-    //const navegacion = useNavigate();
+    const navegacion = useNavigate();
+    const autor = 1009;
 
     useEffect(() => {
-        clientHttp.get(`/?author_id=1009`)
+        clientHttp.get(`/?author_id=${autor}`)
             .then((response) => {
                 setLista(response.data)
             });
@@ -19,25 +20,20 @@ const ConsumirApi = () => {
     }, []);
 
     const handlerCrear = () => {
-        // navegacion(`/*`)
-        // clientHttp.post(`/`, tarea)
-        //     .then(() => {
-        //         navegacion(`/`)
-        //     });
+        navegacion(`/*`)
+        clientHttp.post(`/`, {"url":"https://media.tenor.com/xSLKihQxRngAAAAM/hulk-cake.gif", "author_id": autor})
+             .then(() => {
+                navegacion(`/`)
+             });
     }
 
     const handlerEliminar = (item) => {
-        // navegacion(`/*`)
-        // clientHttp.delete(`/${item.id}`)
-        //     .then(() => {
-        //         navegacion(`/`)
-        //     });
-        // console.log(item)
-        // console.log(item.id)
-        // setLista((prevState)=>
-        //     prevState.filter(index=>index!=item.id));
-        lista.filter(elemento => elemento.id >=16);
-        lista.map ((pos) => console.log(pos.id));
+        navegacion(`/*`)
+        clientHttp.delete(`/`, {"id": item.id, "url": item.url, "author_id": autor})
+            .then(() => {
+                navegacion(`/`)
+            });
+        console.log(item)
     }
     const handleChange = (event) => {
         // const target = event.target;
@@ -49,7 +45,6 @@ const ConsumirApi = () => {
         // const fecha = new Date().toISOString();
         // setTarea({ description: descripcion.description, status: 0, id_author: 18, created_at: fecha, finish_at: fecha });
         // console.log(tarea);
-
     };
     
     return (
