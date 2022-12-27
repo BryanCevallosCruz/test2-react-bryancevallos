@@ -6,7 +6,6 @@ const { useEffect, useState } = require("react");
 
 const ConsumirApi = () => {
     const [lista, setLista] = useState([]);
-    const [tarea, setTarea] = useState([]);
     const [descripcion, setDescripcion] = useState("");
     const navegacion = useNavigate();
     const autor = 1009;
@@ -21,7 +20,7 @@ const ConsumirApi = () => {
 
     const handlerCrear = () => {
         navegacion(`/*`)
-        clientHttp.post(`/`, {"url":"https://media.tenor.com/xSLKihQxRngAAAAM/hulk-cake.gif", "author_id": autor})
+        clientHttp.post(`/`, {"url":descripcion.url, "author_id": autor})
              .then(() => {
                 navegacion(`/`)
              });
@@ -36,48 +35,26 @@ const ConsumirApi = () => {
         console.log(item)
     }
     const handleChange = (event) => {
-        // const target = event.target;
-        // const value = target.type === "checkbox" ? target.checked : target.value;
-        // const name = target.id;
-        // setDescripcion((tareaCurrent) => ({ ...tareaCurrent, [name]: value }));
-        // console.log(descripcion)
-
-        // const fecha = new Date().toISOString();
-        // setTarea({ description: descripcion.description, status: 0, id_author: 18, created_at: fecha, finish_at: fecha });
-        // console.log(tarea);
+        const target = event.target;
+        const value = target.type === "checkbox" ? target.checked : target.value;
+        const name = target.id;
+        setDescripcion((tareaCurrent) => ({ ...tareaCurrent, [name]: value }));
     };
     
     return (
         <>
-            {/* <table className="table">
-            <thead>
-                <tr>
-                    <th ><input type="text" id="description" required maxLength="60"
-                        onChange={e => handleChange(e)} /></th>
-                    <th ><button style={{ backgroundColor: "aqua", borderRadius: "4px", border: "none" }}
-                        onClick={() => handlerCrear()}>Agregar</button></th>
-                </tr>
-            </thead>
-            <tbody>
-                {lista.map((item) =>
-                    <tr key={item.id}>
-                        <td>{item.name}</td>
-                        <td><button style={{ backgroundColor: "#E46C38", borderRadius: "4px", border: "none" }}
-                            onClick={(e) => handlerEliminar(item)}>Eliminar</button></td>
-                    </tr>)}
-            </tbody>
-        </table> */}
-
             <div className="container text-center">
                 <div className="row justify-content-md-center">
-                    <div className="col col-lg-4">
-                        <input type="text" id="description" required maxLength="60"
+                    <form className="row justify-content-md-center" onSubmit={(e) => handlerCrear(e)}>
+                    <div className="col col-lg-5">
+                        <input type="text" className="form-control" id="url" required maxLength="500" placeholder="Gif URL"
                             onChange={e => handleChange(e)} />
                     </div>
-                    <div className="col col-lg-2">
-                        <button style={{ backgroundColor: "aqua", borderRadius: "4px", border: "none" }}
-                            onClick={() => handlerCrear()}>Agregar</button>
+                    <div className="col col-lg-1">
+                        <button type="submit" style={{ backgroundColor: "white", borderRadius: "4px" }}
+                            >Agregar</button>
                     </div>
+                    </form>
                 </div>
                     {lista.map((item) =>
                         <div className="row justify-content-md-center" 
@@ -89,7 +66,7 @@ const ConsumirApi = () => {
         
                             <div className="col col-lg-4"> 
                                 <img className = "img-fluid mx-auto d-block" src={item.url} />
-                                <button style={{ backgroundColor: "#E46C38", borderRadius: "4px", border: "none" }}
+                                <button type="button" className="btn btn-primary"
                                 onClick={(e) => handlerEliminar(item)}>Eliminar</button>
                             </div>
                             
