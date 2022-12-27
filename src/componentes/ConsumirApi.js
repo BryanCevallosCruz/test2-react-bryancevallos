@@ -29,7 +29,7 @@ const ConsumirApi = () => {
 
     const handlerEliminar = (item) => {
         navegacion(`/*`)
-        clientHttp.delete(`/`, {"id": item.id, "url": item.url, "author_id": autor})
+        clientHttp.delete(`/`, {data:{"id": item.id, "url": item.url, "author_id": autor}})
             .then(() => {
                 navegacion(`/`)
             });
