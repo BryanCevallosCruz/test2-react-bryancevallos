@@ -7,6 +7,7 @@ const { useEffect, useState } = require("react");
 const ConsumirApi = () => {
     const [lista, setLista] = useState([]);
     const [descripcion, setDescripcion] = useState("");
+    const [loading, setLoading] = useState(false);
     const navegacion = useNavigate();
     const autor = 1009;
 
@@ -15,7 +16,9 @@ const ConsumirApi = () => {
             .then((response) => {
                 setLista(response.data)
             });
-            console.log(lista.id)
+        setLoading(lista.length==0 ? false:true);
+        console.log(lista.length)
+        console.log(loading) 
     }, []);
 
     const handlerCrear = () => {
@@ -24,6 +27,7 @@ const ConsumirApi = () => {
              .then(() => {
                 navegacion(`/`)
              });
+        setLoading(lista.length==0 ? false:true); 
     }
 
     const handlerEliminar = (item) => {
@@ -32,7 +36,7 @@ const ConsumirApi = () => {
             .then(() => {
                 navegacion(`/`)
             });
-        console.log(item)
+        setLoading(lista.length==0 ? false:true); 
     }
     const handleChange = (event) => {
         const target = event.target;
@@ -40,10 +44,10 @@ const ConsumirApi = () => {
         const name = target.id;
         setDescripcion((tareaCurrent) => ({ ...tareaCurrent, [name]: value }));
     };
+
     
-    return (
-        <>
-            <div className="container text-center">
+    return (loading ? <h1 className="container text-center">No posee gifs</h1>:
+          <><div className="container text-center border-bottom border-4">
                 <div className="row justify-content-md-center">
                     <form className="row justify-content-md-center" onSubmit={(e) => handlerCrear(e)}>
                     <div className="col col-lg-5">
@@ -66,10 +70,11 @@ const ConsumirApi = () => {
         
                             <div className="col col-lg-4"> 
                                 <img className = "img-fluid mx-auto d-block" src={item.url} />
-                                <button type="button" className="btn btn-primary"
+                                <p/>
+                                <button type="button" className="btn btn-primary" aling="left"
                                 onClick={(e) => handlerEliminar(item)}>Eliminar</button>
-                            </div>
-                            
+                                <p/>
+                            </div>                  
                         </div>)}
             </div>
 
